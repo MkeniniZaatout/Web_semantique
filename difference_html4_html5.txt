@@ -1,0 +1,16 @@
+Difference HTml5 et Html4 :
+
+
+html4:  
+<!doctype html public "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">  
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
+<link rel="stylesheet" type="text/css" href="monStyle.css">
+<script type="text/javascript" src="monSript.js"></script>
+
+html5:
+<meta charset="UTF-8">
+<meta name="description" content="Exemple de description">  
+<link rel="stylesheet" href="monStyle.css"/>  
+<script src="monSript.js"></script>
+
+http://miageprojet2.unice.fr/User:Max/LPSIL_IDSE_-_Web_Multim%C3%A9dia_%2f%2f_Web_S%C3%A9mantique/Partie_1%3a_Application_Pictionnary
