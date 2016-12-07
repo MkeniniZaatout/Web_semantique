@@ -9,8 +9,9 @@
 
     // ensuite on requête à nouveau la base pour l'utilisateur qui vient d'être inscrit, et
     $sql = $dbh->query("SELECT u.id, u.email, u.nom, u.prenom, u.couleur, u.profilepic FROM USERS u WHERE u.email='".$email."' AND u.password='".$password."'");
-     if ($sql->rowCount()<1) {
-		 
+     if ($sql->rowCount()= 0) {
+		  echo " Probleme ";
+		  header("Location: main.php");
 	 }
 	  else {
         // on récupère la ligne qui nous intéresse avec $sql->fetch(),
@@ -31,5 +32,5 @@
         $_SESSION["profilepic"] = $result["profilepic"];
     }
 
-    header("Location: main.php?rowCount=".$sql->rowCount());
+    header("Location: main.php");
 ?>
