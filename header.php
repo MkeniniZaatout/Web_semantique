@@ -1,7 +1,7 @@
 <?php
     session_start();
     if (isset($_SESSION["email"])) {
-        echo '<div><span>Bienvenue !<a href="logout.php">Logout</a></span></div>';
+        echo '<div><h3>Bienvenue <a href="logout.php">Logout</a></h3></div>';
     } else {
         echo '<div id="header">
         <form id="search" action="req_login.php" method="post">
