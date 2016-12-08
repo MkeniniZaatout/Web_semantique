@@ -52,7 +52,9 @@ if(!isset($_SESSION['prenom'])) {
                 var command = {};  
                 command.command="start";  
                 command.x=e.x;  
-                ...  
+                command.y= e.y;
+                command.size=size;
+                command.color=color;  
                 //c'est équivalent à:   
                 command = {"command":"start", "x": e.x, ...};  
   
@@ -86,7 +88,12 @@ if(!isset($_SESSION['prenom'])) {
             document.getElementById('restart').onclick = function() {  
                 console.log("clear");  
                 // ici ajouter à la liste des commandes une nouvelle commande de type "clear"  
-                // ici, effacer le context, grace à la méthode clearRect.  
+            var newCommand = {}; 
+			newCommand.newCommand = "clear";
+			drawingCommands.push(newCommand); 			
+				// ici, effacer le context, grace à la méthode clearRect. 
+				context.clearRect(0, 0, 400, 400);
+				
             };  
   
             document.getElementById('validate').onclick = function() {  
@@ -94,6 +101,8 @@ if(!isset($_SESSION['prenom'])) {
                 document.getElementById('drawingCommands').value = JSON.stringify(drawingCommands);  
   
                 // ici, exportez le contenu du canvas dans un data url, et ajoutez le en valeur au champs "picture" pour l'envoyer au serveur.  
+			var dataURL = canvas.toDataURL();
+			document.getElementById("picture").value = dataURL;
             };  
         };  
     </script>  
@@ -110,7 +119,7 @@ if(!isset($_SESSION['prenom'])) {
   
     <input id="restart" type="button" value="Recommencer"/>  
     <input type="hidden" id="drawingCommands" name="drawingCommands"/>  
-    <!-- à quoi servent ces champs hidden ?  -->  
+    <!-- à quoi servent ces champs hidden ? Sa permet d'avoir des champs cachés à l'utilisateur  -->  
     <input type="hidden" id="picture" name="picture"/>  
     <input id="validate" type="submit" value="Valider"/>  
 </form>  
