@@ -60,7 +60,7 @@
             <input type="tel" required name="telephone" id="telephone"/><br>
           </li>
             <li><label for="web">site web :</label>
-            <input type="url" required name="web" id="web"/><br>
+            <input type="url"  name="web" id="web"/><br>
 </li>
 <li>
             <label for ="gender">Selectionner votre sexe:*</label>
@@ -68,12 +68,7 @@
             <input type="radio" required="required" name="gender" value="female"> Female<br>
 
             <br><label for="date">Date de naissance :*</label>
-                       <input type="date" name="birthdate" id="birthdate" placeholder="JJ/MM/AAAA" value= 
-			<?php
-            if (isset($_GET["birthdate"])) {
-                echo $_GET["birthdate"];
-            }
-            ?> required onchange="computeAge()"/>
+           <input type="date" name="birthdate" id="birthdate" placeholder="JJ/MM/AAAA" onchange="computeAge()" value= <?php if (isset($_GET["birthdate"])) { echo $_GET["birthdate"];}?> />
             <script>
                 computeAge(){
                   try{
@@ -85,9 +80,9 @@
                         console.log(new Date(0).getYear());  
                         console.log(new Date(65572346585).getYear());  
                         // modifier ici la valeur de l'élément age
-                      document.getElementById("age").value = Math.floor((Date.now() - Date.parse(document.getElementById("birthdate").valueAsDate)) / (365.25 * 24 * 60 * 60 * 1000));
+                      document.getElementById("age").val() = Math.floor((Date.now() - Date.parse(document.getElementById("birthdate").valueAsDate)) / (1000 * 60 * 60 * 24 * 365));
                   } catch(e) {
-                      document.getElementById("age").value = '';
+                      document.getElementById("age").val() = '';
                   }
                 }
             </script>
