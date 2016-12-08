@@ -103,12 +103,14 @@ if(!isset($_SESSION['prenom'])) {
 <canvas id="myCanvas"></canvas>  
   
 <form name="tools" action="req_paint.php" method="post">  
-    <!-- ici, insérez un champs de type range avec id="size", pour choisir un entier entre 0 et 4) -->  
-    <!-- ici, insérez un champs de type color avec id="color", et comme valeur l'attribut  de session couleur (à l'aide d'une commande php echo).) -->  
+	<!-- ici, insérez un champs de type range avec id="size", pour choisir un entier entre 0 et 4) -->
+    <input type="range" id="size" min="0" max="3" step="1"/>
+    <!-- ici, insérez un champs de type color avec id="color", et comme valeur l'attribut  de session couleur (à l'aide d'une commande php echo).) -->
+    <input type="color" id="color" value="#000000"/>
   
     <input id="restart" type="button" value="Recommencer"/>  
     <input type="hidden" id="drawingCommands" name="drawingCommands"/>  
-    <!-- à quoi servent ces champs hidden ? -->  
+    <!-- à quoi servent ces champs hidden ?  -->  
     <input type="hidden" id="picture" name="picture"/>  
     <input id="validate" type="submit" value="Valider"/>  
 </form>  
