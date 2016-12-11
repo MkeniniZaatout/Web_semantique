@@ -29,7 +29,7 @@ $commands = ;
             canvas.width = 400;  
             canvas.height= 400;  
             var context = canvas.getContext('2d');  
-  
+			var _x0, _y0;
             var start = function(c) {  
                 // complétez  
             }  
