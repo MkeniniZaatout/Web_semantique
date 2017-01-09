@@ -68,22 +68,22 @@
             <input type="radio" required="required" name="gender" value="female"> Female<br>
 
             <br><label for="date">Date de naissance :*</label>
-           <input type="date" name="birthdate" id="birthdate" placeholder="JJ/MM/AAAA" onchange="computeAge()" value= <?php if (isset($_GET["birthdate"])) { echo $_GET["birthdate"];}?> />
+           <input type="date" name="birthdate" id="birthdate" placeholder="JJ/MM/AAAA" onchange="Age()" />
             <script>
-                computeAge(){
+               Age = function(e){
                   try{
 				   // j'affiche dans la console quelques objets javascript, ce qui devrait vous aider.  
-                        console.log(Date.now());  
-                        console.log(document.getElementById("birthdate"));  
-                        console.log(document.getElementById("birthdate").valueAsDate);  
-                        console.log(Date.parse(document.getElementById("birthdate").valueAsDate));  
-                        console.log(new Date(0).getYear());  
-                        console.log(new Date(65572346585).getYear());  
-                        // modifier ici la valeur de l'élément age
-                      document.getElementById("age").val() = Math.floor((Date.now() - Date.parse(document.getElementById("birthdate").valueAsDate)) / (1000 * 60 * 60 * 24 * 365));
-                  } catch(e) {
-                      document.getElementById("age").val() = '';
-                  }
+                   console.log(Date.now());
+                        console.log(document.getElementById("birthdate"));
+                        console.log(document.getElementById("birthdate").valueAsDate);+
+                        console.log(Date.parse(document.getElementById("birthdate").valueAsDate));
+                        console.log(new Date(0).getFullYear());
+                        console.log(new Date(document.getElementById("birthdate").valueAsDate).getFullYear());
+                        var age = new Date(Date.now()).getFullYear() - new Date(document.getElementById("birthdate").valueAsDate).getFullYear();
+                        document.getElementById("age").value =age;
+                    } catch(e) {
+                        document.getElementById("age").value = "";
+                    }
                 }
             </script>
 			<span class="required_notification">Saisir la date de naissance : "JJ/MM/AAAA"</span>
@@ -112,7 +112,7 @@
             <!-- ajouter à input l'attribut qui donne une indication grisée (placeholder) -->
 
             <script>
-            loadProfilePic(){
+            loadProfilePic = function (e){
             // on récupère le canvas où on affichera l'image
             var canvas = document.getElementById("preview");
             var ctx = canvas.getContext("2d");
@@ -169,9 +169,10 @@
             // on charge l'image pour de vrai, lorsque ce sera terminé le callback loadProfilePic sera appelé.
             reader.readAsDataURL(file);
 		}
+		
             </script>
         </li>
-        <li>
+		<li>
             <input type="submit" value="Soumettre Formulaire">
         </li>
     </ul>
