@@ -5,6 +5,7 @@ var favicon = require('serve-favicon'); // Charge le middleware de favicon
 var logger = require('log4js').getLogger('Server');
 var app = express();
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 
 app.use(bodyParser.urlencoded({ extend: false}));
@@ -18,6 +19,8 @@ app.use(function (req, res) { // Répond enfin
 
 });
 */
+
+
 
 logger.info('server start');
 app.listen(1313);
@@ -104,6 +107,8 @@ app.post('/register', function (req, res) {
 	};
 	InsertNewUser(info,res);
 
+
+	
 });
 /* On affiche le profile  */
 app.get('/profile', function (req, res) {
@@ -135,6 +140,10 @@ connection.query("SELECT * from users WHERE nom='"+userName+"' AND password ='"+
 		if(rows.length > 0){
 			
         logger.info('Le résultat de la requête: ', rows);
+		/*
+		session.open = true;
+		session.nom = rows[0].nom;
+		*/
 		res.redirect('/profil');
 		
 		}else{
@@ -173,6 +182,14 @@ connection.query("INSERT INTO users (email,password,nom,prenom,tel,website,sexe,
 		logger.info('Ajout d utilisateur réussi');
         //logger.info('Le résultat de la requête: ', rows);
 		res.redirect('/inscription');
+		
+		/*
+		if(rows.lentgh>0){
+			session.open = true;
+			session.mail = rows[0].email
+		}
+		
+		*/
 		
 		}else{
 			logger.info('Ajout d utilisateur échoué');
