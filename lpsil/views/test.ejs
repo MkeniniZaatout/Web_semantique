@@ -5,13 +5,10 @@
 <div><h3>Bienvenue </h3></div>
 <div id="header">
 <form id="insc" method="post" action="/inscription" >
-<p>
-<h2>Votre mail : <%= email%></h2>
-<h2>Votre prenom : <%= prenom%></h2>
-<h2>Votre photo : </h2> <img src="<%= profilepic%>" width="50" height="50" value="<%= profilepic%>"/>
-<h2>Votre couleur : <input type="color" id="couleur" name="couleur" value="<%= couleur%>"></h2>
-<p>
-<% include foot %>
+<label>Email <input type="text" name="email" id="email"></label>
+<label>Mot de passe<input type="password" name="password" id="password"></label>
+<input type="submit" class="submit" value="Inscription">
+</form></div>
 <!--
 app.get('/', function (req, res, next) {
   if (req.session.username) {
@@ -22,3 +19,4 @@ app.get('/', function (req, res, next) {
     res.redirect("/login");
   }
 }); -->
+<% include foot %>

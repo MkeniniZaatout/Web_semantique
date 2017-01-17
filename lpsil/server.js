@@ -7,7 +7,6 @@ var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
-
 app.use(bodyParser.urlencoded({ extend: false}));
 app.use(morgan('combined')); // Active le middleware de logging
 app.use(express.static(__dirname + '/public')); // Indique que le dossier /public contient des fichiers statiques (middleware chargé de base)
@@ -19,8 +18,6 @@ app.use(function (req, res) { // Répond enfin
 
 });
 */
-
-
 
 logger.info('server start');
 app.listen(1313);
@@ -44,9 +41,17 @@ app.get('/login', function(req, res){
 });
 
 app.get('/profil', function(req, res){
-    res.render('profil');
-
-	
+	if(session.open == true){
+		res.render('profil',{
+		email: session.mail,
+		nom: session.nom,
+		prenom: session.prenom,
+		profilepic: session.photo,
+		couleur: session.color
+		});
+	}
+	/* on redirige l'utilisateur vers si la session 
+	res.render('login'); */
 });
 
 app.get('/inscription', function (req, res) {
@@ -64,7 +69,6 @@ app.post('/login', function (req, res) {
 	var mdp = req.body.password;
 	logger.info("username :" +username);
 	QueryVerifLoginBd(username,mdp,res);
-	var session = require('express-session');
 });
 
 app.post('/profil', function(req, res){
@@ -74,7 +78,6 @@ app.post('/profil', function(req, res){
 app.post('/inscription', function (req, res) {
     res.render('inscription');
 });
-
 
 app.post('/register', function (req, res) {
     // TODO ajouter un nouveau utilisateur
@@ -106,9 +109,6 @@ app.post('/register', function (req, res) {
 	profilepic:profilepic
 	};
 	InsertNewUser(info,res);
-
-
-	
 });
 /* On affiche le profile  */
 app.get('/profile', function (req, res) {
@@ -138,14 +138,14 @@ connection.query("SELECT * from users WHERE nom='"+userName+"' AND password ='"+
     if (!err){
 		logger.info('la syntaxte de la requete est juste');
 		if(rows.length > 0){
-			
+			logger.info('Je suis dans le if')
         logger.info('Le résultat de la requête: ', rows);
-		/*
 		session.open = true;
-		session.nom = rows[0].nom;
-		*/
+		session.mail = rows[0].email;
+		session.prenom = rows[0].prenom;
+		session.photo = rows[0].profilepic;
+		session.color = rows[0].couleur;
 		res.redirect('/profil');
-		
 		}else{
 			logger.info('Login introuvable');
 			res.redirect('/login');
