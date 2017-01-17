@@ -50,8 +50,13 @@ app.get('/profil', function(req, res){
 		couleur: session.color
 		});
 	}
-	/* on redirige l'utilisateur vers si la session 
-	res.render('login'); */
+	// on redirige l'utilisateur vers une page
+	app.get('/BadSession', function(req, res, next) {
+	res.setHeader('Content-Type', 'text/html');
+	res.write('<p>Bad Session </p>');
+	res.render('BadSession');
+	})
+	
 });
 
 app.get('/inscription', function (req, res) {
@@ -71,12 +76,18 @@ app.post('/login', function (req, res) {
 	QueryVerifLoginBd(username,mdp,res);
 });
 
+
+
 app.post('/profil', function(req, res){
 	res.redirect('/inscription');
 });
 
 app.post('/inscription', function (req, res) {
     res.render('inscription');
+});
+
+app.post('/BadSession', function(req, res){
+	res.redirect('/BadSession');
 });
 
 app.post('/register', function (req, res) {
@@ -141,6 +152,7 @@ connection.query("SELECT * from users WHERE nom='"+userName+"' AND password ='"+
 			logger.info('Je suis dans le if')
         logger.info('Le résultat de la requête: ', rows);
 		session.open = true;
+		session.nom = rows[0].nom;
 		session.mail = rows[0].email;
 		session.prenom = rows[0].prenom;
 		session.photo = rows[0].profilepic;
@@ -181,19 +193,36 @@ connection.query("INSERT INTO users (email,password,nom,prenom,tel,website,sexe,
 		//logger.info('la syntaxte de la requete est juste');
 		logger.info('Ajout d utilisateur réussi');
         //logger.info('Le résultat de la requête: ', rows);
-		res.redirect('/inscription');
-		
+		// Requete Sql "imbriqué" afin de recuperer les info à placer sur la page profile
+		connection.query("SELECT * from users WHERE nom='"+info.nom+"' AND password ='"+info.password+"';", function (err, rows, fields) {
+			if (!err){
+				logger.info('la syntaxte de la requete est juste');
+				if(rows.length > 0){
+					logger.info('Je suis dans le if')
+				logger.info('Le résultat de la requête: ', rows);
+				session.open = true;
+				session.nom = rows[0].nom;
+				session.mail = rows[0].email;
+				session.prenom = rows[0].prenom;
+				session.photo = rows[0].profilepic;
+				session.color = rows[0].couleur;
+				// Je me redirige vers la page profil avec les information de l'utilisateur inscris
+				res.redirect('/profil');
+				}else{
+					logger.info('Probleme de redirection ver profil apres inscirption');
+					res.redirect('/login');
+				}
+			}
+		});
 		/*
 		if(rows.lentgh>0){
 			session.open = true;
 			session.mail = rows[0].email
 		}
-		
 		*/
-		
 		}else{
-			logger.info('Ajout d utilisateur échoué');
-			res.redirect('/login');
+			logger.info('Ajout d utilisateur échoué , reessayer l inscription');
+			res.redirect('/Inscription');
 	}
 
 });

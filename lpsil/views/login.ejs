@@ -1,14 +1,40 @@
 <% var title = 'Formulaire login' %>
 <% include head %>
+<style> 
 
+#Login {
+color: #111; font-family: 'Helvetica Neue', sans-serif; font-size: 20px; font-weight: bold; letter-spacing: -1px; line-height: 1; text-align: center;
+  position:absolute;
+  left: 10%;
+  top: 20%;
+  background:(../public/images/vague.png);
+  background-color:#00CCFF;
+  
+  border:2px ridge black;
+ }
+
+#connexion {
+color: #111; font-family: 'Helvetica Neue', sans-serif; font-size: 20px; font-weight: bold; letter-spacing: -1px; line-height: 1; text-align: center;
+  position:absolute;
+  left: 50%;
+  top: 50%;
+  background-color:#00CCFF;
+  border:2px ridge black;
+  }
+</style>
+
+<div id="Login">
 <h1>Login</h1>
 Accés au profil
+<br>
 <form method="post" action="/login">
   <p>
-    <label>Username:</label>
+<br> 
+  <label>Username:</label>
     <input type="text" name="username" placeholder="Username">
   </p>
   <p>
+<br>
     <label>Password:</label>
     <input type="password" name="password" placeholder="Password">
   </p>
@@ -16,6 +42,17 @@ Accés au profil
     <input type="submit" value="Login">
   </p>
 </form>
+</div>
 
+<div id="connexion">
+<form method="post" action="/inscription">
+  <p>
+  Si vous n'avez pas encore de compte 
+  <br>veuillez vous inscrire :
+  <br>
+  <input type="submit" value="Inscription">
+  </p>
+</form>
+</div>
 
 <% include foot %>

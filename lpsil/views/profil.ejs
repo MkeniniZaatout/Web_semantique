@@ -1,24 +1,41 @@
 <% var title = 'Profil' %>
 <% include head %>
-<h1>Profil</h1>
 
-<div><h3>Bienvenue </h3></div>
+<style> 
+body{
+text-align: center;
+}
+
+#profil{
+font-family: Arial, Sanserif;
+font-size:18px;
+background: #b3ccff;
+position:relative ; 
+width:750px; 
+padding : 5px ;
+border:2px ridge black;
+textarea{ vertical-align:top ;  }
+
+}
+
+
+fieldset{ position:relative ; width:1000px; padding : 5px }
+</style> 
+<fieldset>
+<div id ="profil">
+<h1>Page de votre <b>Profil</b></h1>
+<div id=""><h2>Bienvenue Mr <%= nom%></h2></div>
 <div id="header">
 <form id="insc" method="post" action="/inscription" >
 <p>
-<h2>Votre mail : <%= email%></h2>
-<h2>Votre prenom : <%= prenom%></h2>
-<h2>Votre photo : </h2> <img src="<%= profilepic%>" width="50" height="50" value="<%= profilepic%>"/>
-<h2>Votre couleur : <input type="color" id="couleur" name="couleur" value="<%= couleur%>"></h2>
+Votre mail : <%= email%>
+<br>Votre prenom : <%= prenom%>
+<br>Votre photo :  <div id="image"><img src="<%= profilepic%>" width="50" height="50" value="<%= profilepic%>"/></div>
+<br>Votre couleur : 
+
+<input type="color" id="couleur" name="couleur" value="<%= couleur%>">
+
 <p>
+</fieldset>
+<div/>
 <% include foot %>
-<!--
-app.get('/', function (req, res, next) {
-  if (req.session.username) {
-    // User is authenticated, let him in
-    res.render('index');
-  } else {
-    // Otherwise we redirect him to login form
-    res.redirect("/login");
-  }
-}); -->
