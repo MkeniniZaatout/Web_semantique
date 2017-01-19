@@ -1,41 +1,92 @@
 <% var title = 'Profil' %>
 <% include head %>
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <style> 
-body{
-text-align: center;
+body
+{
+background-color: palegreen;
+   background-image:url("./images/Pictionary.png");
+   background-repeat:no-repeat;
+   background-position: center;
+   background-attachment: fixed;
+}
+
+h1{
+margin:6px;
 }
 
 #profil{
+text-align: center;
+box-shadow: 8px 8px 12px #aaa;
+left: 28%;
+top: 10em;
 font-family: Arial, Sanserif;
 font-size:18px;
 background: #b3ccff;
 position:relative ; 
-width:750px; 
-padding : 5px ;
+width:680px;
+height: 470px; 
+padding : 50px ;
 border:2px ridge black;
-textarea{ vertical-align:top ;  }
-
+border-radius: 25px;
 }
 
+#header{
+text-align:left;
+background-color:#C0C0C0;
+border:1px solid gray;
+padding:5px;
+box-shadow:2px 2px 10px gray; 
+-moz-box-shadow:2px 2px 10px gray;
+-webkit-box-shadow:2px 2px 10px gray;
+}
 
-fieldset{ position:relative ; width:1000px; padding : 5px }
+#img{
+box-shadow: 3px 3px 5px #aaa;
+}
+
+#Nom{
+background-color:#EFEEE9;
+}
+
+#Prenom{
+background-color:#FFFFFF;
+}
+
+#Mail{
+background-color:#EFEEE9;
+}
+
+#CouleurP{
+background-color:#FFFFFF;
+}
+
+#fleche {
+text-align:left;
+}
 </style> 
-<fieldset>
 <div id ="profil">
-<h1>Page de votre <b>Profil</b></h1>
-<div id=""><h2>Bienvenue Mr <%= nom%></h2></div>
-<div id="header">
-<form id="insc" method="post" action="/inscription" >
-<p>
-Votre mail : <%= email%>
-<br>Votre prenom : <%= prenom%>
-<br>Votre photo :  <div id="image"><img src="<%= profilepic%>" width="50" height="50" value="<%= profilepic%>"/></div>
-<br>Votre couleur : 
-
-<input type="color" id="couleur" name="couleur" value="<%= couleur%>">
-
-<p>
-</fieldset>
-<div/>
+	<div id="bienvenue">
+	<h1>Page de votre <b>Profil</b></h1>
+	<h2>Bienvenue Mr <%= nom%></h2>
+	</div>
+<br>
+	<div id="header">
+	<p>
+	<img id="img" src="<%= profilepic%>" width="50" height="50" value="<%= profilepic%>"/>
+	<br>
+	<br><p id="Nom">Nom : <%= nom%> </p> <p id="Prenom">Prenom : <%= prenom%> </p>
+	<p id="Mail">Mail : <%= email%></p>
+	<p id="CouleurP">Couleur préferé :
+	<input type="color" id="couleur" name="couleur" value="<%= couleur%>"></p>
+	<p>
+	</div>
+	<div id="fleche">
+<button type="button" class="btn btn-default btn-sm">
+<span class="glyphicon glyphicon-arrow-left"></span><a href="/login" >Retour</a>
+</button>
+</div>
+</div>
 <% include foot %>

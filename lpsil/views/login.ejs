@@ -1,6 +1,14 @@
 <% var title = 'Formulaire login' %>
 <% include head %>
 <style> 
+body
+{
+background-color: palegreen;
+   background-image:url("./images/Pictionary.png");
+   background-repeat:no-repeat;
+   background-position: center;
+   background-attachment: fixed;
+}
 
 #Login {
 color: #111; font-family: Tahoma,sans-serif; font-size: 18px; font-weight: bold; letter-spacing: -1px; line-height: 1; text-align: center;
@@ -11,8 +19,8 @@ color: #111; font-family: Tahoma,sans-serif; font-size: 18px; font-weight: bold;
   background-color:#DDFFFF;
   width: 30%;
   height: 51%;
-   border-radius: 25px;
-    border: 2px solid #73AD21;
+  border-radius: 25px;
+  border: 2px solid #73AD21;
   box-shadow: 1px 1px 12px #555; 
  }
  
@@ -20,13 +28,17 @@ input[type="submit"]{
 cursor:pointer;
 }
  
+ #boutonInscrire{
+ left: 90%;
+ }
+ 
 #insrciption {
   color: #111; font-family: Tahoma, sans-serif; font-size: 9px; font-weight: bold; letter-spacing: 0px; line-height: 2; text-align: left;
   position:absolute;
   top: 80%;
-  left: 20%;
+  left: 18%;
   background-color:#DDFFFF;
-  
+  text-shadow: 0px 0px 9px #777;
   }
 hr {
   height: 1px;
@@ -62,13 +74,9 @@ Accés au profil
  <form method="post" action="/inscription">
   <p>
  Si vous n'avez pas encore de compte 
- veuillez vous inscrire :
-  <input type="submit" value="Inscription">
+ veuillez vous inscrire <a href="../inscription"> ici </a>
   </p>
 </form>
 </div>
  </div>
-
-
-
 <% include foot %>

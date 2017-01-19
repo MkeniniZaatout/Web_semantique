@@ -172,7 +172,6 @@ logger.info("Connexion Terminé");
 }
 
 function InsertNewUser(info,res){
-
 var mysql = require('mysql');
 var connection = mysql.createConnection({
     port: '3306',
