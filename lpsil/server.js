@@ -87,7 +87,7 @@ app.get('/Paint', function(req, res)
 
 app.get('/dashBord', function(req, res)
 {
-	logger.info('Acces à la page Paint');
+	logger.info('Acces à la page dashBord');
 	if(session.open == true){
 		res.render('dashBord',{
 		email: session.mail,
