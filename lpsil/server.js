@@ -7,7 +7,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
-app.use(bodyParser.urlencoded({ extend: false}));
+app.use(bodyParser.urlencoded({ extend: true}));
 app.use(morgan('combined')); // Active le middleware de logging
 app.use(express.static(__dirname + '/public')); // Indique que le dossier /public contient des fichiers statiques (middleware chargé de base)
 
@@ -32,17 +32,48 @@ app.set('views', __dirname + '/views');
 /* On affiche le formulaire d'enregistrement */
 
 app.get('/', function(req, res){
-    res.redirect('/login');
+	res.redirect('/login');
 });
 
 app.get('/login', function(req, res){
-    res.render('login');
-	
+	logger.info('Acces à la page login');
+	session.open = false;
+	res.render('login');
 });
 
+app.get('/inscription', function (req, res) {
+	logger.info('Acces à la page inscription');
+	res.render('inscription');
+});
+
+/* On affiche le profile  */
 app.get('/profil', function(req, res){
+	logger.info('Acces à la page profil');
+	
 	if(session.open == true){
+		logger.info('la session est ouverte je vais à la page profil');
 		res.render('profil',{
+		email: session.mail,
+		nom: session.nom,
+		prenom: session.prenom,
+		profilepic: session.photo,
+		couleur: session.color,
+		ville : session.ville
+		});
+	}
+	else 
+	{	logger.info('Dans le else , la session pas ouverte');
+		// on redirige l'utilisateur vers une page
+		res.render('BadSession');
+	}
+logger.info('je suis ni dans le if ');
+});
+
+app.get('/Paint', function(req, res)
+{
+	logger.info('Acces à la page Paint');
+	if(session.open == true){
+		res.render('Paint',{
 		email: session.mail,
 		nom: session.nom,
 		prenom: session.prenom,
@@ -50,19 +81,27 @@ app.get('/profil', function(req, res){
 		couleur: session.color
 		});
 	}
-	// on redirige l'utilisateur vers une page
-	app.get('/BadSession', function(req, res, next) {
-	res.setHeader('Content-Type', 'text/html');
-	res.write('<p>Bad Session </p>');
+	// on redirige l'utilisateur vers la page 
 	res.render('BadSession');
-	})
-	
 });
 
-app.get('/inscription', function (req, res) {
-    res.render('inscription');
+app.get('/dashBord', function(req, res)
+{
+	logger.info('Acces à la page Paint');
+	if(session.open == true){
+		res.render('dashBord',{
+		email: session.mail,
+		nom: session.nom,
+		prenom: session.prenom,
+		profilepic: session.photo,
+		couleur: session.color
+		});
+	}
+	// on redirige l'utilisateur vers la page 
+	res.render('BadSession');
 });
 
+   
 app.post('/login', function (req, res) {
     // TODO vérifier si l'utilisateur existe
 	/*
@@ -77,8 +116,8 @@ app.post('/login', function (req, res) {
 });
 
 
-
 app.post('/profil', function(req, res){
+	
 	res.redirect('/inscription');
 });
 
@@ -87,7 +126,11 @@ app.post('/inscription', function (req, res) {
 });
 
 app.post('/BadSession', function(req, res){
-	res.redirect('/BadSession');
+	res.render('/BadSession');
+});
+
+app.get('/ErreurLogin', function(req, res){
+	res.render('ErreurLogin');
 });
 
 app.post('/register', function (req, res) {
@@ -121,54 +164,59 @@ app.post('/register', function (req, res) {
 	};
 	InsertNewUser(info,res);
 });
-/* On affiche le profile  */
-app.get('/profile', function (req, res) {
-    // TODO  
-    // On redirige vers la login si l'utilisateur n'a pas été authentifier 
-    // Afficher le button logout                                                
-});      
+
+/*
+app.post('/Paint',function(req, res){	
+	// res.redirect('/');
+});
+*/
 
 
 // Base de donnée
 // Connection Simple
 // Requete de verifcation du Login
 function QueryVerifLoginBd(userName, pswd, res){
-
-var mysql = require('mysql');
-var connection = mysql.createConnection({
-    port: '3306',
-	host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'pictionnary'
-});
-
-connection.connect();
-logger.info("Connexion Etablis");
-connection.query("SELECT * from users WHERE nom='"+userName+"' AND password ='"+pswd+"';", function (err, rows, fields) {
-    if (!err){
-		logger.info('la syntaxte de la requete est juste');
-		if(rows.length > 0){
-			logger.info('Je suis dans le if')
-        logger.info('Le résultat de la requête: ', rows);
-		session.open = true;
-		session.nom = rows[0].nom;
-		session.mail = rows[0].email;
-		session.prenom = rows[0].prenom;
-		session.photo = rows[0].profilepic;
-		session.color = rows[0].couleur;
-		res.redirect('/profil');
-		}else{
-			logger.info('Login introuvable');
-			res.redirect('/login');
-		}
-	}
-
-});
-
+	var mysql = require('mysql');
+	var connection = mysql.createConnection({
+		port: '3306',
+		host: 'localhost',
+		user: 'root',
+		password: 'root',
+		database: 'pictionnary'
+	});
+	connection.connect();
+	logger.info("Connexion Etablis");
+	// function(err, result){}
+		connection.query("SELECT * from users WHERE nom='"+userName+"' AND password ='"+pswd+"';", function (err, rows, fields) {
+			if (!err){
+				logger.info('la syntaxte de la requete est juste');
+				if(rows.length > 0){
+				logger.info('Je suis dans le if')
+				logger.info('Le résultat de la requête: ', rows);
+				session.open = true;
+				session.nom = rows[0].nom;
+				session.mail = rows[0].email;
+				session.prenom = rows[0].prenom;
+				session.photo = rows[0].profilepic;
+				session.ville = rows[0].ville;
+				session.color = rows[0].couleur;
+				res.redirect('/profil');
+				}else{
+					logger.info('Erreur de login');
+					logger.info('Probleme de redirection ver profil apres inscription');
+					res.redirect('/ErreurLogin');
+					
+				}
+					
+			
+			}
+			
 // Deconnexion à la Bd
+logger.info('ceuxci est le 2e message apres a le If !err, avant la deconnexion');
 connection.end();
-logger.info("Connexion Terminé");
+
+logger.info("Connexion à la Bd Terminé");
+});
 }
 
 function InsertNewUser(info,res){
@@ -183,18 +231,19 @@ var connection = mysql.createConnection({
 
 connection.connect();
 logger.info("Connexion Etablis");
-
 // Requete pour ajouter un utilisateur
 connection.query("INSERT INTO users (email,password,nom,prenom,tel,website,sexe,birthdate,ville,taille,couleur,profilepic) VALUES ('"
 +info.email+"','"+info.password+"','"+info.nom+"','"+info.prenom+"','"+info.tel+"','"+info.website+"','"+info.sexe+"','"+info.birthdate+"','"+info.ville+"','"
 +info.taille+"','"+info.couleur+"','"+info.profilepic+"')", function (err, result) {	
-   if (!err){
-		//logger.info('la syntaxte de la requete est juste');
+
+	if (!err){
+		// logger.info('la syntaxte de la requete est juste');
 		logger.info('Ajout d utilisateur réussi');
-        //logger.info('Le résultat de la requête: ', rows);
-		// Requete Sql "imbriqué" afin de recuperer les info à placer sur la page profile
+		// Requete Sql "imbriqué" afin de recuperer les info et à les placer sur la page profile
 		connection.query("SELECT * from users WHERE nom='"+info.nom+"' AND password ='"+info.password+"';", function (err, rows, fields) {
+			logger.info('Je suis dans la requete pour aller dans la page de login');
 			if (!err){
+				logger.info('Je suis dans le if');
 				logger.info('la syntaxte de la requete est juste');
 				if(rows.length > 0){
 					logger.info('Je suis dans le if')
@@ -208,7 +257,7 @@ connection.query("INSERT INTO users (email,password,nom,prenom,tel,website,sexe,
 				// Je me redirige vers la page profil avec les information de l'utilisateur inscris
 				res.redirect('/profil');
 				}else{
-					logger.info('Probleme de redirection ver profil apres inscirption');
+					logger.info('Probleme de redirection ver profil apres inscription');
 					res.redirect('/login');
 				}
 			}
@@ -232,17 +281,13 @@ logger.info("Connexion Terminé");
 
 }
 /*
-
-// Pool
-// Permettre d'utiliser plusieurs instance
-
   var pool =  mysql.createPool({
     connectionLimit : 100, //important
 	port: '3306',
     host : 'localhost',
     user : 'root',
     password: 'root',
-        database: 'pictionnary'
+    database: 'pictionnary'
   });   
 
   pool.getConnection(function(err,connection){
@@ -265,5 +310,4 @@ logger.info("Connexion Terminé");
               res.json({"code" : 100, "status" : "Erreur de connexion à la DB"});
               return;    
         });
-  });
-*/
+  });*/

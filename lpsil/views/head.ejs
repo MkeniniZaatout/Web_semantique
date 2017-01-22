@@ -6,7 +6,43 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" media="screen" href="styles.css">
-
+	<meta charset=utf-8 />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body background="">
+<body>
+
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+        </button>
+        <a class="navbar-brand" href="/login">Pictionnary</a>
+      </div>
+
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+            <li>
+              <a href="#">Connexion Facebook
+               <i class="fa fa-facebook"></i>
+             </a>
+          </li>
+		
+		</ul>
+        <form id="signin" class="navbar-form navbar-right" role="form" action="/inscription">
+               <button type="submit" class="btn btn-default"  action="inscription">
+               Inscription  <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+
+             </button>
+         </form>
+
+      </div>
+    </div>
+  </nav>
