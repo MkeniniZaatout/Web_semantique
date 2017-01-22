@@ -9,7 +9,6 @@ background-color: palegreen;
    background-position: center;
    background-attachment: fixed;
 }
-
 #DashBord{
 text-align: center;
 box-shadow: 8px 8px 12px #aaa;
@@ -25,14 +24,13 @@ padding : 50px ;
 border:2px ridge black;
 border-radius: 25px;
 }
-
 h1{
 margin:6px;
 }
 </style>
-
 <div id="DashBord">
 <h1>DashBord</h1>
+<h2><p name="nom" id="nom"><%= nom%></p></h2>
 <h3>Modifier vos informations : </h3>
 <form role="form" class="form-horizontal" action="/updateProfil" method="post" name="inscription">
 <label for="email">E-mail :*</label>
@@ -57,7 +55,7 @@ margin:6px;
             <ul>
                 <li>
             <label for="prenom">Nom :</label>
-            <input type="text" required name="nom" id="nom"/><br>
+            <input type="text" required name="nomChange" id="nomChange"/><br>
               </li>
               <li>
             <label for="prenom">Prénom :*</label>
@@ -73,29 +71,62 @@ margin:6px;
             <input type="radio" required="required" id="gender" name="gender" value="male"> Male
             <input type="radio" required="required" name="gender" value="female"> Female<br>
 
-            <br><label for="date">Date de naissance :*</label>
-           <input type="date" name="birthdate" id="birthdate" placeholder="JJ/MM/AAAA" onchange="Age()" />
-            <script>
-               Age = function(e){
-                  try{
-				   // j'affiche dans la console quelques objets javascript, ce qui devrait vous aider.  
-                   console.log(Date.now());
-                        console.log(document.getElementById("birthdate"));
-                        console.log(document.getElementById("birthdate").valueAsDate);+
-                        console.log(Date.parse(document.getElementById("birthdate").valueAsDate));
-                        console.log(new Date(0).getFullYear());
-                        console.log(new Date(document.getElementById("birthdate").valueAsDate).getFullYear());
-                        var age = new Date(Date.now()).getFullYear() - new Date(document.getElementById("birthdate").valueAsDate).getFullYear();
-                        document.getElementById("age").value =age;
-                    } catch(e) {
-                        document.getElementById("age").value = "";
-                    }
-                }
-            </script>
-			<span class="required_notification">Saisir la date de naissance : "JJ/MM/AAAA"</span>
-            <br><label for="age">Age :*</label>
-            <input type="number" required="required" name="age" id="age" disabled/><br>
-            <br><label for="ville">Ville :</label>
+			<label for="birthdate">Date de naissance* :			
+            <input type="date" name="birthdate" id="birthdate" placeholder="JJ/MM/AAAA" required onchange="computeAge()"/>
+			<script>  
+                computeAge = function(e) 
+				{  
+                    try
+					{  
+                        // j'affiche dans la console quelques objets javascript, ce qui devrait vous aider.  
+                        console.log(Date.now());  
+                        console.log(document.getElementById("birthdate"));  
+                        console.log(document.getElementById("birthdate").value);  
+                        console.log(Date.parse(document.getElementById("birthdate").value));  
+                        console.log(new Date(0).getYear());  
+                        console.log(new Date(65572346585).getYear());  
+						console.log(document.getElementById("age"));
+						// modifier ici la valeur de l'élément age
+						var dateAtuel = new Date();
+						var anneeActuel = dateAtuel.getYear();
+						var moiActuel = dateAtuel.getMonth();
+						var jourActuel = dateAtuel.getDay();
+						var dateNaissance = Date.parse(document.getElementById("birthdate").value);
+						var anneeNaissance = new Date(dateNaissance).getYear();
+						var moiNaissance = new Date(dateNaissance).getMonth();
+						var jourNaissance = new Date(dateNaissance).getDay();
+						if(moiActuel < moiNaissance)
+						{
+							document.getElementById("age").value = anneeActuel - anneeNaissance - 1;
+						}
+						else if(moiActuel > moiNaissance)
+						{
+							document.getElementById("age").value = anneeActuel - anneeNaissance;
+						}
+						else
+						{
+							if(jourActuel < jourNaissance)
+							{
+								document.getElementById("age").value = anneeActuel - anneeNaissance - 1;
+							}
+							else
+							{
+								document.getElementById("age").value = anneeActuel - anneeNaissance;
+							}
+						}
+					}
+					catch(e) 
+					{  
+						document.getElementById("age").value = "";
+					}  
+				}  
+			</script>  
+		<br>
+            <label for="age">Age:</label> 
+            <input class="form-control" type="number" name="age" id="age" disabled/> 
+			
+			
+			<br><label for="ville">Ville :</label>
             <input type="text" required name="ville" id="ville"/><br>
             <br><label for="taille">Taille :</label>
             <input type="range" value="0" max="2.5" min="0" step="0.01" required name="taille" id="taille"/><br>

@@ -90,15 +90,11 @@ app.get('/dashBord', function(req, res)
 	logger.info('Acces à la page dashBord');
 	if(session.open == true){
 		res.render('dashBord',{
-		email: session.mail,
 		nom: session.nom,
-		prenom: session.prenom,
-		profilepic: session.photo,
-		couleur: session.color
 		});
 	}
 	// on redirige l'utilisateur vers la page 
-	res.render('BadSession');
+	res.redirect('login');
 });
 
    
@@ -131,6 +127,45 @@ app.post('/BadSession', function(req, res){
 
 app.get('/ErreurLogin', function(req, res){
 	res.render('ErreurLogin');
+});
+
+app.post('/updateProfil', function (req, res) {
+    // TODO ajouter un nouveau utilisateur
+	var email = req.body.email;
+	var password = req.body.password;
+	// le vrais nom pour le where 
+	var nom = req.body.nom;
+	var nomChange = req.body.nomChange;
+	var prenom = req.body.prenom;  
+	var sexe = req.body.gender;  
+	var telephone = req.body.telephone;  
+	var siteweb = req.body.web;  
+	var birthdate = req.body.birthdate;  
+	var ville = req.body.ville;  
+	var taille = req.body.taille;   
+	var couleur = req.body.textcolor;  
+	var profilepic = req.body.profilepic;
+	logger.info(email+nomChange+prenom+sexe+telephone+siteweb+birthdate+ville+taille+couleur);
+	
+	
+	var info = {
+	email:email,
+	password:password,
+	// nom:nom,
+	nomChange:nomChange,
+	prenom:prenom,
+	sexe:sexe,
+	telephone:telephone,
+	siteweb:siteweb,
+	birthdate:birthdate,
+	ville:ville,
+	taille:taille,
+	couleur:couleur,
+	profilepic:profilepic
+	};
+	
+	UpdateProfil(info,res);
+	
 });
 
 app.post('/register', function (req, res) {
@@ -176,8 +211,8 @@ app.post('/Paint',function(req, res){
 // Connection Simple
 // Requete de verifcation du Login
 function QueryVerifLoginBd(userName, pswd, res){
-	var mysql = require('mysql');
-	var connection = mysql.createConnection({
+	 var mysql = require('mysql');
+	 var connection = mysql.createConnection({
 		port: '3306',
 		host: 'localhost',
 		user: 'root',
@@ -209,15 +244,49 @@ function QueryVerifLoginBd(userName, pswd, res){
 				}
 					
 			
+			}else{
+				throw err;
+				
 			}
 			
 // Deconnexion à la Bd
-logger.info('ceuxci est le 2e message apres a le If !err, avant la deconnexion');
-connection.end();
-
-logger.info("Connexion à la Bd Terminé");
+// logger.info('ceuxci est le 2e message apres a le If !err, avant la deconnexion');
+// connection.end();
+// logger.info("Connexion à la Bd Terminé");
 });
 }
+
+function UpdateProfil(info,res){
+	var mysql = require('mysql');
+	var connection = mysql.createConnection({
+		port: '3306',
+		host: 'localhost',
+		user: 'root',
+		password: 'root',
+		database: 'pictionnary'
+	});
+	connection.connect();
+	logger.info("Connexion Etablis");
+	logger.info(info.email+info.nomChange+info.prenom+info.telephone+info.sexe+info.couleur+info.siteweb+info.brithdate+info.ville);
+	
+	connection.query("UPDATE users SET email ='"+info.email+"',password='"+info.password+"' ,prenom='"+info.prenom+"',tel='"+info.telephone+"',website='"
+	+info.siteweb+"',sexe='"+info.sexe+"',birthdate='"+info.brithdate+"',ville= '"+info.ville+"',taille='"+info.taille+"',couleur='"
+	+info.couleur+"' ,profilepic='"+info.profilepic+"' WHERE nom = 'Mkenini'",function(err, result){
+		if(!err){
+			logger.info("Modification des informations reussis");
+			res.redirect("profil");
+		}else{
+		logger.info('echec de la modification du profil');
+		throw err;
+		}
+		// result.redirect('dashBord');			
+		// Deconnexion à la Bd
+		// connection.end();
+		// logger.info("Connexion Terminé");	
+	});	
+
+}		
+
 
 function InsertNewUser(info,res){
 var mysql = require('mysql');
@@ -229,9 +298,9 @@ var connection = mysql.createConnection({
     database: 'pictionnary'
 });
 
-connection.connect();
+
 logger.info("Connexion Etablis");
-// Requete pour ajouter un utilisateur
+// Requete pour ajouter un utilisateur 
 connection.query("INSERT INTO users (email,password,nom,prenom,tel,website,sexe,birthdate,ville,taille,couleur,profilepic) VALUES ('"
 +info.email+"','"+info.password+"','"+info.nom+"','"+info.prenom+"','"+info.tel+"','"+info.website+"','"+info.sexe+"','"+info.birthdate+"','"+info.ville+"','"
 +info.taille+"','"+info.couleur+"','"+info.profilepic+"')", function (err, result) {	
