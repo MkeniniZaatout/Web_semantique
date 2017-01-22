@@ -1,0 +1,43 @@
+<% var title = 'Pictionnary - DashBord' %>
+<% include navBar %>
+<style> 
+body
+{
+background-color: palegreen;
+   background-image:url("./images/Pictionary.png");
+   background-repeat:no-repeat;
+   background-position: center;
+   background-attachment: fixed;
+}
+#DashBord{
+text-align: center;
+box-shadow: 8px 8px 12px #aaa;
+left: 25%;
+top: 2em;
+font-family: Arial, Sanserif;
+font-size:18px;
+background: #b3ccff;
+position:relative ; 
+width:680px;
+height: 400px; 
+padding : 50px ;
+border:2px ridge black;
+border-radius: 25px;
+}
+h1{
+margin:6px;
+}
+
+</style>
+<div id="DashBord">
+<h1>DashBord</h1>
+<h2><p name="nom" id="nom"><%= nom%></p></h2>
+<h2>Suppression du compte</h2>
+<form role="form" class="form-horizontal" action="/supProfil" method="post" name="inscription">
+<p>Etes-vous sur de vouloire supprimer votre compte Mr<p name ="nomSup" id="nomSup"> <%= nom%> </p></p>
+<input type="submit" value="Oui">
+<br>
+<a href="/profil">Non<a/>
+</div>
+</form>
+<% include foot %>

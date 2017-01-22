@@ -1,0 +1,93 @@
+<% var title = 'Profil-Admin' %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style> 
+
+body
+{
+background-color: palegreen;
+   background-image:url("./images/Pictionary.png");
+   background-repeat:no-repeat;
+   background-position: center;
+   background-attachment: fixed;
+}
+
+h1{
+margin:6px;
+}
+
+#profil{
+text-align: center;
+box-shadow: 8px 8px 12px #aaa;
+left: 25%;
+top: 2em;
+font-family: Arial, Sanserif;
+font-size:18px;
+background: #b3ccff;
+position:relative ; 
+width:680px;
+height: 470px; 
+padding : 50px ;
+border:2px ridge black;
+border-radius: 25px;
+}
+
+#header{
+text-align:left;
+background-color:#FF8400;
+border:1px solid gray;
+padding:5px;
+box-shadow:2px 2px 10px gray; 
+-moz-box-shadow:2px 2px 5px gray;
+-webkit-box-shadow:2px 2px 10px gray;
+}
+
+#img{
+box-shadow: 3px 3px 5px #aaa;
+}
+
+#Nom{
+background-color:#EFEEE9;
+}
+
+#Prenom{
+background-color:#FFFFFF;
+}
+
+#Mail{
+background-color:#EFEEE9;
+}
+
+#CouleurP{
+background-color:#FFFFFF;
+}
+
+#ville{
+background-color:#EFEEE9;
+}
+
+#fleche {
+text-align:left;
+}
+</style> 
+<div id ="profil">
+	<div id="bienvenue">
+	<h1>Page de votre <b>Profil</b></h1>
+	<h2>Bienvenue Mr <%= nom%></h2>
+	</div>
+<br>
+	<div id="header">
+	<p>
+	<img id="img" src="<%= profilepic%>" width="50" height="50" value="<%= profilepic%>"/><p id="Nom">Nom : <%= nom%> </p> <p id="Prenom">Prenom : <%= prenom%> </p>
+	<p id="Mail">Mail : <%= email%></p>
+	<p id="CouleurP">Couleur préferé :
+	<input type="color" id="couleur" name="couleur" value="<%= couleur%>"></p>
+	<p id="ville">Ville : <%= ville%></p>
+
+	</div>
+<a href='/dashBord-Admin'>Dashbord</a>
+	<br><a href='/index'>Deconnexion</a>
+
+</div>
+<% include foot %>

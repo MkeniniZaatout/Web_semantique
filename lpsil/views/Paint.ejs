@@ -1,11 +1,11 @@
 <% var title = 'Pictionnary-Paint' %>
 <% include navBar %>
     <link rel="stylesheet" media="screen" href="css/styles.css" >  
-    <script>  
+ <script>
         // les quatre tailles de pinceau possible.  
         var sizes=[8,20,44,90];  
         // la taille et la couleur du pinceau  
-        var size, color;  
+        var size, color;
         // la dernière position du stylo  
         var x0, y0;  
         // le tableau de commandes de dessin à envoyer au serveur lors de la validation du dessin  
@@ -18,21 +18,12 @@
             console.log("color:" + color);  
         }  
   
-		function getColor(){
-			return document.getElementById('couleur').value;
-		}
-        
-		
-		var setSize = function() 
+        var setSize = function() 
 		{  
             // ici, récupèrez la taille dans le tableau de tailles, en fonction de la valeur choisie dans le champs taille.
 			size =  sizes[document.getElementById('taille').value];
             console.log("size:" + size);  
         }  
-  
-		function getSize(){
-			return sizes[document.getElementById('taille').value];
-		}
   
         window.onload = function() 
 		{  
@@ -129,21 +120,27 @@
         };  
     </script>  
 </head>  
-<body>
+<body>  
+  
 <canvas id="myCanvas"></canvas>  
 
-<!-- Afin d'envoyer -->
-<form name="tools" action="/paint" method="post">  
-    <!-- ici, insérez un champs de type range avec id="size", pour choisir un entier entre 0 et 4)-->  
-    <!-- ici, insérez un champs de type color avec id="color", et comme valeur l'attribut  de session couleur-->
-	<input type="range" id="taille" min="0" max="3" step="1" value="0"/>
-	<input type="color" id="couleur" value="<%= couleur%>" />
-  
+<form method="post" name="tools" action="\paint" >
+   <input type="range" id="taille" min="0" max="3" step="1" value="0"/>
+	<input type="color" id="couleur" value= '<%=couleur%>'/>
+    <label for="destinataire">Email du destinataire</label>
+    <input type="text" id="destinataire" name="destinataire"/>
+
+    <label for="mot">Mot</label>
+    <input type="text" id="mot" name="mot" placeholder="le dessin"/>
+
     <input id="restart" type="button" value="Recommencer"/>  
     <input type="hidden" id="drawingCommands" name="drawingCommands"/>  
-    <!-- à quoi servent ces champs hidden => post le dessin pour le formulaire-->  
+    <!-- à quoi servent ces champs hidden ? post le dessin du formulaire-->  
     <input type="hidden" id="picture" name="picture"/>  
     <input id="validate" type="submit" value="Valider"/>  
 </form>  
  
+</body>  
+</html>
+
 <% include foot %>
