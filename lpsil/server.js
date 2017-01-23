@@ -4,16 +4,17 @@ var morgan = require('morgan'); // Charge le middleware de logging
 var favicon = require('serve-favicon'); // Charge le middleware de favicon
 var logger = require('log4js').getLogger('Server');
 var app = express();
+// var passport = require('passport'); non fonctionnel
 var bodyParser = require('body-parser');
 var session = require('express-session');
-var FacebookStrategy = require('passport-facebook').Strategy;
+// var FacebookStrategy = require('passport-facebook').Strategy; non fonctionnel 
 var mysql = require('mysql');
 
 app.use(bodyParser.urlencoded({ extend: true}));
 app.use(morgan('combined')); // Active le middleware de logging
 app.use(express.static(__dirname + '/public')); // Indique que le dossier /public contient des fichiers statiques (middleware chargé de base)
 
-
+// app.use(passport.session()); non fonctionel
 /*
 app.use(function (req, res) { // Répond enfin
     res.send('Hello world!');
@@ -142,33 +143,38 @@ app.get('/dashBord-Admin', function(req, res)
 {
 logger.info('Acces à la page dashBord Admin');
 if(session.open == true){
-		var mysql = require('mysql');
-		var connection = mysql.createConnection({
-		port: '3306',
-		host: 'localhost',
-		user: 'root',
-		password: 'root',
-		database: 'pictionnary'
-		});
-		connection.connect();
-		logger.info("Connexion Etablis");
-			// function(err, result){}
-			connection.query("SELECT nom from users", function (err, rows, fields) {
-			if (!err){
-				logger.info('la syntaxte de la requete est juste');	
-				res.render('dashBord-Admin');
-				/*,{nom1: nom1, nom2:nom2}*/
+	var pool =  mysql.createPool({
+            connectionLimit : 100, //important
+            host : 'localhost',
+            user : 'test',
+            password: 'test',
+            database: 'pictionnary'
+        });
 
-			}else{
-				throw err;
-				
-		}
-});
-		
-		
-// res.render('dashBord-Admin',{rows:rows});
-	}
-	// on redirige l'utilisateur vers la page 
+        pool.getConnection(function(err,connection) {
+            if (err) {
+                connection.release();
+                res.json({"code": 100, "status": "Erreur de connexion à la DB"});
+                return;
+			}
+	
+			connection.query("SELECT nom from users", function (err, rows) {
+                connection.release();
+                if (!err) {
+									logger.info('Le résultat de la requête: ', rows);
+				var nom1 = rows[0].nom;
+				logger.info(nom1);
+				var nom2 = rows[1].nom;
+				logger.info(nom2);
+                    res.render('dashBord-Admin', {resultat: rows});
+                }
+                else {
+                    throw err;
+                }
+			});
+		});		
+	}else
+
 	res.redirect('index');
 });
 
@@ -229,11 +235,16 @@ app.get('/ErreurLogin', function(req, res){
 	res.render('ErreurLogin');
 });
 
+app.post('/supProfilAdmninSide', function (req, res){	
+var nom = req.body.nameSup; 
+	logger.info(nom);
+	Deleteprofil(nom,res);
+});
 
 app.post('/supProfil', function (req, res){	
 var nom = session.nom; 
 logger.info(nom);
-// Deleteprofil(nom,res);
+ Deleteprofil(nom,res);
 });
 
 app.post('/updateProfil', function (req, res) {
@@ -317,6 +328,8 @@ app.post('/register', function (req, res) {
 	
 });
 
+// app.get('/auth/facebook', passport.authenticate('facebook', {scope: ['email', 'public_profile', 'user_friends']})); non fonctionnel 
+
 app.post('/paint', function (req, res) {
 
     var drawingCommands=req.body.drawingCommands;
@@ -351,6 +364,8 @@ app.post('/paint', function (req, res) {
     });
     // TODO ajouter un nouveau utilisateur
 });
+
+
 
 function Deleteprofil(nom,res){
 	 var mysql = require('mysql');
@@ -476,6 +491,7 @@ function QueryVerifLoginAdmin(userName, pswd, res){
 }
 
 
+
 function UpdateProfil(info,res){
 	var mysql = require('mysql');
 	var connection = mysql.createConnection({
@@ -551,8 +567,6 @@ logger.info("Connexion Terminé");
 }
 
 
-
-
 // Administrateur 
 function InsertNewUserAdmin(info,res){
 var mysql = require('mysql');
@@ -596,6 +610,55 @@ logger.info("Connexion Terminé");
 
 }
 
+/*
+
+/// FACEBOOK /////
+
+//Facebook	
+	passport.use(new FacebookStrategy(
+	{
+        clientID: '463573240515273',
+        clientSecret: '0ce42a1f02ddeb96d1e1ef274affff2d',
+        callbackURL: "http://localhost:1313/auth/facebook/callback",
+    	profileFields   : ['id, last_name, first_name, gender, email, birthday, location, website, picture']
+  	}, function(token, refreshToken, profile, done) 
+    {
+        console.log(profile);
+        process.nextTick(function()
+        {
+            connection.query('Select * From users Where id=' + session.id, function(err,rows)
+            {
+                if (err)
+                    return done(err);
+                if (rows.length) 
+                {
+                    return done(null, rows[0]);
+                } 
+                else
+                {
+                    var newUser = new Object();
+                    newUser.profilepic = profile._json.picture;
+                    newUser.prenom = profile._json.first_name;
+                    newUser.email = profile._json.email;
+                    newUser.id = profile._json.id;
+                    newUser.birthdate = '00-00-00';
+                    insertQuery = { id:newUser.id, prenom : newUser.prenom, profilepic : newUser.profilepic, email : newUser.email, birthdate : newUser.birthdate};
+                    connection.query('INSERT INTO users SET ?', insertQuery,function(err,rows2)
+                    {
+                        if(err)
+                        {
+                            return done(err);
+                        }
+                        else
+                        {
+                            return done(null, newUser);
+                        }               
+                    });
+                }
+            });
+        });
+    }));
+*/
 
 /*
   var pool =  mysql.createPool({

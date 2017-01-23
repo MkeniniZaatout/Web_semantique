@@ -1,4 +1,4 @@
-
+<% include head %>
 <% var title = 'Pictionnary - DashBord' %>
 <style> 
 body
@@ -18,8 +18,8 @@ font-family: Arial, Sanserif;
 font-size:18px;
 background: #b3ccff;
 position:relative ; 
-width:680px;
-height: 970px; 
+width:580px;
+height: 470px; 
 padding : 50px ;
 border:2px ridge black;
 border-radius: 25px;
@@ -35,8 +35,15 @@ margin:6px;
 <br>
 <p>La liste des Utilisateurs : </p>
 <div>
-
+<% for(var i = 0 ; i < resultat.length ; i++) { %>
+		<p> <%= resultat[i].nom %>  </p>
+	<% } %>
 </div>
+<form role="form" action="/supProfilAdmninSide" method="post" name="inscription">
+Saisir ici le nom de l'utilisateur que dont vous voulez supprimer le compte :
+<input type="text" required name="nameSup" id="nameSup"/><br>
+<input type="submit" value="Soumettre nomSup">
+</form>
 </div>
 
 <% include foot %>
