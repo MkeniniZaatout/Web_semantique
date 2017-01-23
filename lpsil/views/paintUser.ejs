@@ -31,21 +31,15 @@ margin:6px;
 
 <div id="DashBord">
 <h1>DashBord-Admin</h1>
-<p><a href="dashBord-AdminModif">Modification des informations</a></p>
-<p><a href="paintUser">Voir les dessin des utilisateurs</a></p>
-<p>Suppression des utilisateurs : <p>
+<p>Voici les dessin des utilisateurs :</p>
 <br>
-<p>La liste des Utilisateurs : </p>
-<div>
+<p>La liste des pictionnary des Utilisateurs : </p>
 <% for(var i = 0 ; i < resultat.length ; i++) { %>
-		<p> <%= resultat[i].nom %>  </p>
-	<% } %>
-</div>
-<form role="form" action="/supProfilAdmninSide" method="post" name="inscription">
-Saisir ici le nom de l'utilisateur que dont vous voulez supprimer le compte :
-<input type="text" required name="nameSup" id="nameSup"/><br>
-<input type="submit" value="Valider nom d'utilisateur">
-</form>
+        Le dessin : <img src=<%= resultat[i].images %>height="60" width="60">
+        <br>
+		Le mot qu'il faut trouvé : <%=resultat[i].mot%>
+		<br>
+		<% } %>
 </div>
 
 <% include foot %>

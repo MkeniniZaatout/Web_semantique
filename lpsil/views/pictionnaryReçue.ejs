@@ -1,0 +1,46 @@
+<% var title = 'Pictionnary - les Pictionnary' %>
+<% include navBar %>
+<style> 
+body
+{
+background-color: palegreen;
+   background-image:url("./images/Pictionary.png");
+   background-repeat:no-repeat;
+   background-position: center;
+   background-attachment: fixed;
+}
+#DashBord{
+text-align: center;
+box-shadow: 8px 8px 12px #aaa;
+left: 25%;
+top: 2em;
+font-family: Arial, Sanserif;
+font-size:18px;
+background: #b3ccff;
+position:relative ; 
+width:680px;
+height: 970px; 
+padding : 50px ;
+border:2px ridge black;
+border-radius: 25px;
+}
+h1{
+margin:6px;
+}
+</style>
+<div id="DashBord">
+<h1>DashBord</h1>
+
+<p>Voici les pictionnary envoyé par les utilisateur :</p>
+<br>
+
+<% for(var i = 0 ; i < resultat.length ; i++) { %>
+        Le dessin : <img src=<%= resultat[i].images %> height="60" width="60" >
+        <br>		
+		<% } %>
+
+<p>Saisir le mot qui est associé aux dessins</p><br>
+<inpute type="text"/>
+</div>
+
+<% include foot %>
